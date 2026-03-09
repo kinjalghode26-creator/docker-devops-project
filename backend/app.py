@@ -1,14 +1,22 @@
 from flask import Flask, request
 import mysql.connector
+import time
 
 app = Flask(__name__)
 
-db = mysql.connector.connect(
-    host="mysql",
-    user="root",
-    password="root",
-    database="mydb"
-)
+# Wait for MySQL to start
+while True:
+    try:
+        db = mysql.connector.connect(
+            host="mysql",
+            user="root",
+            password="root",
+            database="mydb"
+        )
+        break
+    except:
+        print("Waiting for MySQL...")
+        time.sleep(5)
 
 cursor = db.cursor()
 
