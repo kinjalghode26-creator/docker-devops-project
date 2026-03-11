@@ -3,12 +3,16 @@ version: "3.9"
 services:
 
   mysql:
-    image: mysql:8
+    image: mysql:8.0
     container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_ROOT_HOST: "%"
       MYSQL_DATABASE: mydb
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
@@ -16,7 +20,8 @@ services:
 
   backend:
     build: ./backend
-    container_name: backend
+    container_name: flask-backend
+    restart: always
     ports:
       - "5000:5000"
     depends_on:
